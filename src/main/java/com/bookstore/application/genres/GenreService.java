@@ -2,7 +2,6 @@ package com.bookstore.application.genres;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
-
 @Service
 public class GenreService {
 

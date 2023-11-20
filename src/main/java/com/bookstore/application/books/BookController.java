@@ -10,7 +10,6 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
-
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }

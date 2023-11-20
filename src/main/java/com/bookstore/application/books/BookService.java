@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookService {
+public class BookService{
     private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
     private final ModelMapper modelMapper;
