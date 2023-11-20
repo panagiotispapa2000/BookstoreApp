@@ -83,19 +83,9 @@ public class CartService {
                             + updatedCartItemDTO.getBookId() + " not found."));
             if (book.isAvailability()) {
 
-                long duplicateCounter = existingCart.getCartItemList()
-                        .stream()
-                        .filter(item -> item.getBook().getId().equals(updatedCartItemDTO.getBookId())
-                                        && !item.getId().equals(updatedCartItemDTO.getId()))
-                        .count();
-
-                if (duplicateCounter > 0) {
-                    throw new DuplicateKeyException("You cannot update the cart given the same book ID twice");
-                }
-
                 CartItem cartItem = existingCart.getCartItemList()
                         .stream()
-                        .filter(item -> item.getId().equals(updatedCartItemDTO.getId()))
+                        .filter(item -> item.getBook().getId().equals(updatedCartItemDTO.getBookId()))
                         .findAny()
                         .orElse(new CartItem());
 
