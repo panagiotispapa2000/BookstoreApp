@@ -27,6 +27,6 @@ public class Cart {
     private LocalDateTime creationDate;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CartItem> cartItemList = new ArrayList<>();
 }

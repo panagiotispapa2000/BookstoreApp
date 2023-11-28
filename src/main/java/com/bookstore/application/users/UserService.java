@@ -1,18 +1,18 @@
 package com.bookstore.application.users;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.*;
 import jakarta.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-@Validated
+@Valid
 public class UserService {
 
     private final UserRepository userRepository;
@@ -23,10 +23,15 @@ public class UserService {
         this.modelMapper = modelMapper;
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<UserDTO> getUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
     }
 
+    @Transactional
     public ResponseEntity<?> getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
 
@@ -39,7 +44,7 @@ public class UserService {
     }
 
     @Transactional
-    public User create(@Valid @NotNull User user) {
+    public User create(@NotNull User user) {
         if (userRepository.findUserByEmail(user.getEmail()) != null) {
             throw new UserGlobalException("The provided email already exists for another user");
         } else if (userRepository.findUserByUsername(user.getUsername()) != null) {

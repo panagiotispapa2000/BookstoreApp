@@ -106,12 +106,13 @@ public class CartService {
 
     @Transactional
     public void deleteItem(Long id) {
-//        Optional<CartItem> cartItem = cartItemRepo.findById(id);
-//
-//        Cart cart = cartItem.get().getCart();
+        Optional<CartItem> cartItem = cartItemRepo.findById(id);
+
+        Cart cart = cartItem.get().getCart();
+        cart.getCartItemList().remove(cartItem.get());
         cartItemRepo.deleteById(id);
-//        if(cart.getCartItemList().isEmpty()){ //If the list of cart items is empty after the last item cart was deleted, then delete the whole cart
-//            deleteCart(cart.getId());
-//        }
+        if (cart.getCartItemList().isEmpty()) { //If the list of cart items is empty after the last item cart was deleted, then delete the whole cart
+            deleteCart(cart.getId());
+        }
     }
 }
