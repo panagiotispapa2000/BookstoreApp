@@ -28,6 +28,7 @@ public class BookService {
         this.modelMapper = modelMapper;
     }
 
+    @Transactional
     //With JPA specifications included
     public List<Book> getBooksByAuthorOrGenre(String authorName, Integer genreID, int page, int size, String byPrice) {
         Specification<Book> bookSpec = (root, query, criteriaBuilder) -> {
@@ -45,6 +46,7 @@ public class BookService {
         return bookRepository.findAll(bookSpec, pageable).getContent();
     }
 
+    @Transactional
     public ResponseEntity<Book> getBook(Long bookID) {
         Optional<Book> book = bookRepository.findById(bookID);
         if (book.isPresent()) {

@@ -1,6 +1,10 @@
 package com.bookstore.application.favorites;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
+@Transactional
 public interface FavoriteBookRepo extends JpaRepository<FavoriteBook, EmbeddableKey> {
 }

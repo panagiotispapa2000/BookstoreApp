@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -84,19 +83,9 @@ public class CartService {
                             + updatedCartItemDTO.getBookId() + " not found."));
             if (book.isAvailability()) {
 
-                long duplicateCounter = existingCart.getCartItemList()
-                        .stream()
-                        .filter(item -> item.getBook().getId().equals(updatedCartItemDTO.getBookId())
-                                        && !item.getId().equals(updatedCartItemDTO.getId()))
-                        .count();
-
-                if (duplicateCounter > 0) {
-                    throw new DuplicateKeyException("You cannot update the cart given the same book ID twice");
-                }
-
                 CartItem cartItem = existingCart.getCartItemList()
                         .stream()
-                        .filter(item -> item.getId().equals(updatedCartItemDTO.getId()))
+                        .filter(item -> item.getBook().getId().equals(updatedCartItemDTO.getBookId()))
                         .findAny()
                         .orElse(new CartItem());
 
@@ -117,12 +106,13 @@ public class CartService {
 
     @Transactional
     public void deleteItem(Long id) {
-//        Optional<CartItem> cartItem = cartItemRepo.findById(id);
-//
-//        Cart cart = cartItem.get().getCart();
+        Optional<CartItem> cartItem = cartItemRepo.findById(id);
+
+        Cart cart = cartItem.get().getCart();
+        cart.getCartItemList().remove(cartItem.get());
         cartItemRepo.deleteById(id);
-//        if(cart.getCartItemList().isEmpty()){ //If the list of cart items is empty after the last item cart was deleted, then delete the whole cart
-//            deleteCart(cart.getId());
-//        }
+        if (cart.getCartItemList().isEmpty()) { //If the list of cart items is empty after the last item cart was deleted, then delete the whole cart
+            deleteCart(cart.getId());
+        }
     }
 }

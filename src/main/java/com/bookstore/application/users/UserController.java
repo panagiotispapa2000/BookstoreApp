@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return userService.getUsers();
     }
 
@@ -27,7 +27,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @PostMapping(path = "/register")
+    @PostMapping
     public ResponseEntity<?> registration(@Valid @RequestBody User user) {
         try {
             User newUser = userService.create(user);

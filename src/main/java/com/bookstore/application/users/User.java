@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Set;
 
 @Entity
@@ -34,6 +33,6 @@ public class User {
     private String email;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     Set<FavoriteBook> favoriteBooks;
 }

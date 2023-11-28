@@ -2,10 +2,12 @@ package com.bookstore.application.favorites;
 
 import com.bookstore.application.books.Book;
 import com.bookstore.application.users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @Getter
@@ -14,6 +16,7 @@ import lombok.Setter;
 public class FavoriteBook {
 
     @EmbeddedId
+    @JsonIgnore
     private EmbeddableKey embeddableKey;
 
     @MapsId("userId")
